@@ -1,0 +1,24 @@
+type User {
+	id: ID! @id
+	email: String! @unique
+	password: String
+	firstname: String
+	lastname: String
+	bike: String
+	open: Int @default(value:0)
+	promotion: String
+	role: Role @default(value:USER)
+	status: Status @default(value:ENABLED)
+	token: String!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+enum Status {
+	ENABLED
+	DISABLED
+}
+enum Role {
+	USER
+	ADMIN
+}

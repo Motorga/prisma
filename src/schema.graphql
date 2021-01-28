@@ -1,0 +1,13 @@
+# import User, Query.user, Query.users, Mutation.createUser, Mutation.updateUser, Mutation.deleteUser from "./generated/prisma.graphql"
+
+type Mutation {
+    signup(token: String!, password: String!, lastname: String!, firstname: String!, promotion: String!): AuthPayload!
+    login(email: String!, password: String!): AuthPayload!
+    updateOpenToUser(id: ID!, open: Int!): User
+    resetAllOpen(id: ID): [User]
+    inviteMember(email:String!, token: String!): User
+}
+
+type AuthPayload {
+    token: String!
+}

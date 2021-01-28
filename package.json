@@ -1,0 +1,23 @@
+{
+  "name": "motorga-api",
+  "version": "1.0.0",
+  "description": "Motorga API",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -e js,graphql src/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "graphql-cli": "^4.1.0",
+    "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.4",
+    "prisma-binding": "^2.3.16",
+    "prisma1": "^1.34.11"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0"
+  }
+}

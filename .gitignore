@@ -1,0 +1,5 @@
+/node_modules
+/.env
+/src/jwt
+/postgres
+/.DS_STORE
