@@ -122,12 +122,12 @@ export type UserOrderByInput =
   | "open_DESC"
   | "promotion_ASC"
   | "promotion_DESC"
+  | "token_ASC"
+  | "token_DESC"
   | "role_ASC"
   | "role_DESC"
   | "status_ASC"
   | "status_DESC"
-  | "token_ASC"
-  | "token_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -247,14 +247,6 @@ export interface UserWhereInput {
   promotion_not_starts_with?: Maybe<String>;
   promotion_ends_with?: Maybe<String>;
   promotion_not_ends_with?: Maybe<String>;
-  role?: Maybe<Role>;
-  role_not?: Maybe<Role>;
-  role_in?: Maybe<Role[] | Role>;
-  role_not_in?: Maybe<Role[] | Role>;
-  status?: Maybe<Status>;
-  status_not?: Maybe<Status>;
-  status_in?: Maybe<Status[] | Status>;
-  status_not_in?: Maybe<Status[] | Status>;
   token?: Maybe<String>;
   token_not?: Maybe<String>;
   token_in?: Maybe<String[] | String>;
@@ -269,6 +261,14 @@ export interface UserWhereInput {
   token_not_starts_with?: Maybe<String>;
   token_ends_with?: Maybe<String>;
   token_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
+  status?: Maybe<Status>;
+  status_not?: Maybe<Status>;
+  status_in?: Maybe<Status[] | Status>;
+  status_not_in?: Maybe<Status[] | Status>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -299,9 +299,9 @@ export interface UserCreateInput {
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
-  token?: Maybe<String>;
 }
 
 export interface UserUpdateInput {
@@ -312,9 +312,9 @@ export interface UserUpdateInput {
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
-  token?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -325,9 +325,9 @@ export interface UserUpdateManyMutationInput {
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
-  token?: Maybe<String>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -354,9 +354,9 @@ export interface User {
   bike?: String;
   open?: Int;
   promotion?: String;
+  token?: String;
   role?: Role;
   status?: Status;
-  token?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -370,9 +370,9 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
-  token: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -388,9 +388,9 @@ export interface UserSubscription
   bike: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Int>>;
   promotion: () => Promise<AsyncIterator<String>>;
+  token: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
   status: () => Promise<AsyncIterator<Status>>;
-  token: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -406,9 +406,9 @@ export interface UserNullablePromise
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
-  token: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -540,9 +540,9 @@ export interface UserPreviousValues {
   bike?: String;
   open?: Int;
   promotion?: String;
+  token?: String;
   role?: Role;
   status?: Status;
-  token?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -558,9 +558,9 @@ export interface UserPreviousValuesPromise
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
-  token: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -576,9 +576,9 @@ export interface UserPreviousValuesSubscription
   bike: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Int>>;
   promotion: () => Promise<AsyncIterator<String>>;
+  token: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
   status: () => Promise<AsyncIterator<Status>>;
-  token: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

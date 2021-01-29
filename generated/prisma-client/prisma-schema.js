@@ -72,9 +72,9 @@ type User {
   bike: String
   open: Int
   promotion: String
+  token: String
   role: Role
   status: Status
-  token: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -94,9 +94,9 @@ input UserCreateInput {
   bike: String
   open: Int
   promotion: String
+  token: String
   role: Role
   status: Status
-  token: String
 }
 
 type UserEdge {
@@ -121,12 +121,12 @@ enum UserOrderByInput {
   open_DESC
   promotion_ASC
   promotion_DESC
+  token_ASC
+  token_DESC
   role_ASC
   role_DESC
   status_ASC
   status_DESC
-  token_ASC
-  token_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -142,9 +142,9 @@ type UserPreviousValues {
   bike: String
   open: Int
   promotion: String
+  token: String
   role: Role
   status: Status
-  token: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -175,9 +175,9 @@ input UserUpdateInput {
   bike: String
   open: Int
   promotion: String
+  token: String
   role: Role
   status: Status
-  token: String
 }
 
 input UserUpdateManyMutationInput {
@@ -188,9 +188,9 @@ input UserUpdateManyMutationInput {
   bike: String
   open: Int
   promotion: String
+  token: String
   role: Role
   status: Status
-  token: String
 }
 
 input UserWhereInput {
@@ -300,14 +300,6 @@ input UserWhereInput {
   promotion_not_starts_with: String
   promotion_ends_with: String
   promotion_not_ends_with: String
-  role: Role
-  role_not: Role
-  role_in: [Role!]
-  role_not_in: [Role!]
-  status: Status
-  status_not: Status
-  status_in: [Status!]
-  status_not_in: [Status!]
   token: String
   token_not: String
   token_in: [String!]
@@ -322,6 +314,14 @@ input UserWhereInput {
   token_not_starts_with: String
   token_ends_with: String
   token_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
+  status: Status
+  status_not: Status
+  status_in: [Status!]
+  status_not_in: [Status!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
