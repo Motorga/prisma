@@ -21,6 +21,7 @@ async function signup (_, args, ctx) {
                 lastname: args.lastname,
                 firstname: args.firstname,
                 promotion: args.promotion,
+                token: '',
                 status: 'ENABLED'
             },
         }
