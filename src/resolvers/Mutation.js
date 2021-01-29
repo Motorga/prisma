@@ -1,8 +1,8 @@
-const { createUser, updateUser, deleteUser, updateOpenToUser, resetAllOpen } = require("./Mutations/mutationUser");
+const { createUser, updateUser, deleteUser, inviteMember, updateOpenToUser, resetAllOpen } = require("./Mutations/mutationUser");
 const { login, signup } = require("./auth");
 
 const Mutation = {
-    createUser, updateUser, deleteUser, updateOpenToUser, resetAllOpen,
+    createUser, updateUser, deleteUser, inviteMember, updateOpenToUser, resetAllOpen,
     login, signup
 };
 

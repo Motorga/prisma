@@ -103,7 +103,7 @@ export interface ClientConstructor<T> {
 
 export type Role = "USER" | "ADMIN";
 
-export type Status = "ENABLED" | "DISABLED";
+export type Status = "ENABLED" | "PENDING" | "DISABLED";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -112,10 +112,10 @@ export type UserOrderByInput =
   | "email_DESC"
   | "password_ASC"
   | "password_DESC"
-  | "firstname_ASC"
-  | "firstname_DESC"
   | "lastname_ASC"
   | "lastname_DESC"
+  | "firstname_ASC"
+  | "firstname_DESC"
   | "bike_ASC"
   | "bike_DESC"
   | "open_ASC"
@@ -183,20 +183,6 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
-  firstname?: Maybe<String>;
-  firstname_not?: Maybe<String>;
-  firstname_in?: Maybe<String[] | String>;
-  firstname_not_in?: Maybe<String[] | String>;
-  firstname_lt?: Maybe<String>;
-  firstname_lte?: Maybe<String>;
-  firstname_gt?: Maybe<String>;
-  firstname_gte?: Maybe<String>;
-  firstname_contains?: Maybe<String>;
-  firstname_not_contains?: Maybe<String>;
-  firstname_starts_with?: Maybe<String>;
-  firstname_not_starts_with?: Maybe<String>;
-  firstname_ends_with?: Maybe<String>;
-  firstname_not_ends_with?: Maybe<String>;
   lastname?: Maybe<String>;
   lastname_not?: Maybe<String>;
   lastname_in?: Maybe<String[] | String>;
@@ -211,6 +197,20 @@ export interface UserWhereInput {
   lastname_not_starts_with?: Maybe<String>;
   lastname_ends_with?: Maybe<String>;
   lastname_not_ends_with?: Maybe<String>;
+  firstname?: Maybe<String>;
+  firstname_not?: Maybe<String>;
+  firstname_in?: Maybe<String[] | String>;
+  firstname_not_in?: Maybe<String[] | String>;
+  firstname_lt?: Maybe<String>;
+  firstname_lte?: Maybe<String>;
+  firstname_gt?: Maybe<String>;
+  firstname_gte?: Maybe<String>;
+  firstname_contains?: Maybe<String>;
+  firstname_not_contains?: Maybe<String>;
+  firstname_starts_with?: Maybe<String>;
+  firstname_not_starts_with?: Maybe<String>;
+  firstname_ends_with?: Maybe<String>;
+  firstname_not_ends_with?: Maybe<String>;
   bike?: Maybe<String>;
   bike_not?: Maybe<String>;
   bike_in?: Maybe<String[] | String>;
@@ -294,8 +294,8 @@ export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   email: String;
   password?: Maybe<String>;
-  firstname?: Maybe<String>;
   lastname?: Maybe<String>;
+  firstname?: Maybe<String>;
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
@@ -307,8 +307,8 @@ export interface UserCreateInput {
 export interface UserUpdateInput {
   email?: Maybe<String>;
   password?: Maybe<String>;
-  firstname?: Maybe<String>;
   lastname?: Maybe<String>;
+  firstname?: Maybe<String>;
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
@@ -320,8 +320,8 @@ export interface UserUpdateInput {
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   password?: Maybe<String>;
-  firstname?: Maybe<String>;
   lastname?: Maybe<String>;
+  firstname?: Maybe<String>;
   bike?: Maybe<String>;
   open?: Maybe<Int>;
   promotion?: Maybe<String>;
@@ -349,8 +349,8 @@ export interface User {
   id: ID_Output;
   email: String;
   password?: String;
-  firstname?: String;
   lastname?: String;
+  firstname?: String;
   bike?: String;
   open?: Int;
   promotion?: String;
@@ -365,8 +365,8 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   password: () => Promise<String>;
-  firstname: () => Promise<String>;
   lastname: () => Promise<String>;
+  firstname: () => Promise<String>;
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
@@ -383,8 +383,8 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
-  firstname: () => Promise<AsyncIterator<String>>;
   lastname: () => Promise<AsyncIterator<String>>;
+  firstname: () => Promise<AsyncIterator<String>>;
   bike: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Int>>;
   promotion: () => Promise<AsyncIterator<String>>;
@@ -401,8 +401,8 @@ export interface UserNullablePromise
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   password: () => Promise<String>;
-  firstname: () => Promise<String>;
   lastname: () => Promise<String>;
+  firstname: () => Promise<String>;
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
@@ -535,8 +535,8 @@ export interface UserPreviousValues {
   id: ID_Output;
   email: String;
   password?: String;
-  firstname?: String;
   lastname?: String;
+  firstname?: String;
   bike?: String;
   open?: Int;
   promotion?: String;
@@ -553,8 +553,8 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   password: () => Promise<String>;
-  firstname: () => Promise<String>;
   lastname: () => Promise<String>;
+  firstname: () => Promise<String>;
   bike: () => Promise<String>;
   open: () => Promise<Int>;
   promotion: () => Promise<String>;
@@ -571,8 +571,8 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
-  firstname: () => Promise<AsyncIterator<String>>;
   lastname: () => Promise<AsyncIterator<String>>;
+  firstname: () => Promise<AsyncIterator<String>>;
   bike: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Int>>;
   promotion: () => Promise<AsyncIterator<String>>;

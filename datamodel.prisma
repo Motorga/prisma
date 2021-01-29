@@ -2,20 +2,21 @@ type User {
 	id: ID! @id
 	email: String! @unique
 	password: String
-	firstname: String
 	lastname: String
+	firstname: String
 	bike: String
 	open: Int @default(value:0)
 	promotion: String
+	token: String
 	role: Role @default(value:USER)
-	status: Status @default(value:ENABLED)
-	token: String!
+	status: Status @default(value:PENDING)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
 
 enum Status {
 	ENABLED
+	PENDING
 	DISABLED
 }
 enum Role {

@@ -55,6 +55,7 @@ enum Role {
 
 enum Status {
   ENABLED
+  PENDING
   DISABLED
 }
 
@@ -66,8 +67,8 @@ type User {
   id: ID!
   email: String!
   password: String
-  firstname: String
   lastname: String
+  firstname: String
   bike: String
   open: Int
   promotion: String
@@ -88,8 +89,8 @@ input UserCreateInput {
   id: ID
   email: String!
   password: String
-  firstname: String
   lastname: String
+  firstname: String
   bike: String
   open: Int
   promotion: String
@@ -110,10 +111,10 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
-  firstname_ASC
-  firstname_DESC
   lastname_ASC
   lastname_DESC
+  firstname_ASC
+  firstname_DESC
   bike_ASC
   bike_DESC
   open_ASC
@@ -136,8 +137,8 @@ type UserPreviousValues {
   id: ID!
   email: String!
   password: String
-  firstname: String
   lastname: String
+  firstname: String
   bike: String
   open: Int
   promotion: String
@@ -169,8 +170,8 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   email: String
   password: String
-  firstname: String
   lastname: String
+  firstname: String
   bike: String
   open: Int
   promotion: String
@@ -182,8 +183,8 @@ input UserUpdateInput {
 input UserUpdateManyMutationInput {
   email: String
   password: String
-  firstname: String
   lastname: String
+  firstname: String
   bike: String
   open: Int
   promotion: String
@@ -235,20 +236,6 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  firstname: String
-  firstname_not: String
-  firstname_in: [String!]
-  firstname_not_in: [String!]
-  firstname_lt: String
-  firstname_lte: String
-  firstname_gt: String
-  firstname_gte: String
-  firstname_contains: String
-  firstname_not_contains: String
-  firstname_starts_with: String
-  firstname_not_starts_with: String
-  firstname_ends_with: String
-  firstname_not_ends_with: String
   lastname: String
   lastname_not: String
   lastname_in: [String!]
@@ -263,6 +250,20 @@ input UserWhereInput {
   lastname_not_starts_with: String
   lastname_ends_with: String
   lastname_not_ends_with: String
+  firstname: String
+  firstname_not: String
+  firstname_in: [String!]
+  firstname_not_in: [String!]
+  firstname_lt: String
+  firstname_lte: String
+  firstname_gt: String
+  firstname_gte: String
+  firstname_contains: String
+  firstname_not_contains: String
+  firstname_starts_with: String
+  firstname_not_starts_with: String
+  firstname_ends_with: String
+  firstname_not_ends_with: String
   bike: String
   bike_not: String
   bike_in: [String!]

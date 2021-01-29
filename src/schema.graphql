@@ -3,9 +3,9 @@
 type Mutation {
     signup(token: String!, password: String!, lastname: String!, firstname: String!, promotion: String!): AuthPayload!
     login(email: String!, password: String!): AuthPayload!
+    inviteMember(email:String!): User
     updateOpenToUser(id: ID!, open: Int!): User
-    resetAllOpen(id: ID): [User]
-    inviteMember(email:String!, token: String!): User
+    resetAllOpen: [User]
 }
 
 type AuthPayload {
