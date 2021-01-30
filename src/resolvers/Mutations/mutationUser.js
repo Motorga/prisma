@@ -1,4 +1,5 @@
 const { forwardTo } = require("prisma-binding");
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 async function createUser(parent, args, ctx, info) {
@@ -6,6 +7,10 @@ async function createUser(parent, args, ctx, info) {
 }
 
 async function updateUser(parent, args, ctx, info) {
+    if (args.data.password) {
+        args.data.password = await bcrypt.hash(args.data.password, 10);
+    }
+
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
