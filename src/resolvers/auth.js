@@ -31,7 +31,7 @@ async function signup (_, args, ctx) {
 }
 
 async function login (parent, {email, password}, ctx) {
-    const user = await ctx.prisma.query.user({ where: { email } }, "{ id email password lastname firstname promotion role status}");
+    const user = await ctx.prisma.query.user({ where: { email } });
     
     if (!user || user.status === 'PENDING') {
         throw new Error('Identifiants incorrects');
@@ -46,18 +46,11 @@ async function login (parent, {email, password}, ctx) {
     return generateToken(user);
 }
 
-const generateToken = ({id, email, lastname, firstname, promotion, role}) => {
+const generateToken = (user) => {
     const privateKey = fs.readFileSync("./src/jwt/private.pem");
 
     return {
-        token: jwt.sign({
-            id,
-            email,
-            lastname,
-            firstname,
-            promotion,
-            role
-        }, {
+        token: jwt.sign(user, {
             key: privateKey,
             passphrase: process.env.JWT_PASSPHRASE
         }, {

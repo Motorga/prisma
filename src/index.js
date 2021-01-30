@@ -5,7 +5,7 @@ const { isUserLogged } = require("./utils");
 require("dotenv").config();
 
 const isLogged = async (resolve, root, args, context, info) => {
-    if (!["login"].includes(info.fieldName) && !isUserLogged(context)) {
+    if (!["login", "signup", "token"].includes(info.fieldName) && !isUserLogged(context)) {
         return false;
     }
 
@@ -24,6 +24,9 @@ const server = new GraphQLServer({
                 process.env.URL_DB_PRISMA,
         }),
     }),
+    cors: {
+        origin: process.env.FRONT_URL
+    }
     // middlewares: [ isLogged ]
 });
 
