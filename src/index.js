@@ -26,7 +26,8 @@ const server = new GraphQLServer({
     }),
     cors: {
         origin: process.env.FRONT_URL
-    }
+    },
+    playground: "dev" === process.env.ENV 
     // middlewares: [ isLogged ]
 });
 
