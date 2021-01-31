@@ -24,13 +24,15 @@ const server = new GraphQLServer({
                 process.env.URL_DB_PRISMA,
         }),
     }),
-    cors: {
-        origin: process.env.FRONT_URL
-    },
-    playground: "dev" === process.env.ENVIRONMENT,
     // middlewares: [ isLogged ]
 });
 
 server.start(
+    {
+        cors: {
+            origin: process.env.FRONT_URL
+        },
+        playground: "dev" === process.env.ENVIRONMENT,
+    },
     () => console.log("GraphQL server is running on http://localhost:4000")
 );
