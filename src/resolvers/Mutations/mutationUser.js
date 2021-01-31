@@ -1,6 +1,7 @@
 const { forwardTo } = require("prisma-binding");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 async function createUser(parent, args, ctx, info) {
     return forwardTo("prisma")(parent, args, ctx, info);
@@ -33,6 +34,32 @@ async function inviteMember(parent, args, ctx, info) {
 
     const token = crypto.randomBytes(20).toString('hex');
     const user = await ctx.prisma.mutation.createUser({ data: { email: args.email, role: args.role, token: token } }, "{ id email }");
+
+    if (user) {
+        try {
+            let transporter = nodemailer.createTransport({
+                host: "ssl0.ovh.net",
+                port: 465,
+                secure: true,
+                auth: {
+                    user: process.env.SMTP_EMAIL_USER,
+                    pass: process.env.SMTP_EMAIL_PASSWORD,
+                },
+            });
+    
+            const text = `Bonjour!\nTu as été invité à rejoindre l'association moto de l'ESGI.\nUn compte a été créé pour toi sur le site motorga.fr, tu peux finaliser sa création grâce à ce lien:\n${process.env.FRONT_URL}/register?token=${token}`;
+
+            await transporter.sendMail({
+                from: `Contact Motorga <contact@motorga.fr>`,
+                to: user.email,
+                subject: "Invitation Motorga",
+                text: text,
+            });
+        } catch (error) {
+            await ctx.prisma.mutation.deleteUser({where: { id: user.id }})
+            throw Error("Une erreur est survenue lors de l'envoi du mail d'invitation. Le compte du membre n'a pas été créé")
+        } 
+    }
 
     return user;
 }
