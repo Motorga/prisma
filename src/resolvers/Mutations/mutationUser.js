@@ -32,7 +32,7 @@ async function inviteMember(parent, args, ctx, info) {
     }
 
     const token = crypto.randomBytes(20).toString('hex');
-    const user = await ctx.prisma.mutation.createUser({ data: { email: args.email, token: token } }, "{ id email }");
+    const user = await ctx.prisma.mutation.createUser({ data: { email: args.email, role: args.role, token: token } }, "{ id email }");
 
     return user;
 }
