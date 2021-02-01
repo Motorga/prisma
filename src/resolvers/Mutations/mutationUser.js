@@ -34,7 +34,7 @@ async function inviteMember(parent, args, ctx, info) {
 
     const token = crypto.randomBytes(20).toString('hex');
     const user = await ctx.prisma.mutation.createUser({ data: { email: args.email, role: args.role, token: token } }, "{ id email }");
-
+    
     if (user) {
         try {
             let transporter = nodemailer.createTransport({
@@ -56,12 +56,14 @@ async function inviteMember(parent, args, ctx, info) {
                 text: text,
             });
         } catch (error) {
-            await ctx.prisma.mutation.deleteUser({where: { id: user.id }})
-            throw Error("Une erreur est survenue lors de l'envoi du mail d'invitation. Le compte du membre n'a pas été créé")
+            await ctx.prisma.mutation.deleteUser({where: { id: user.id }});
+            throw Error(error.message);
         } 
     }
 
-    return user;
+    const users = await ctx.prisma.query.users();
+
+    return users;
 }
 
 async function updateOpenToUser(parent, args, ctx, info) {
@@ -99,11 +101,21 @@ async function resetAllOpen(parent, args, ctx, info) {
     return newUsers;
 }
 
+async function deleteMember(parent, args, ctx, info) {
+    console.log(args)
+    await ctx.prisma.mutation.deleteUser({ where: { id: args.id } });
+
+    const users = await ctx.prisma.query.users();
+
+    return users;
+}
+
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
     inviteMember,
     updateOpenToUser,
-    resetAllOpen
+    resetAllOpen,
+    deleteMember
 };
