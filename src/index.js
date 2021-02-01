@@ -10,6 +10,7 @@ const isLogged = async (resolve, root, args, context, info) => {
     }
 
     const result = await resolve(root, args, context, info);
+
     return result;
 };
 
@@ -24,7 +25,7 @@ const server = new GraphQLServer({
                 process.env.URL_DB_PRISMA,
         }),
     }),
-    // middlewares: [ isLogged ]
+    middlewares: [ isLogged ]
 });
 
 server.start(
