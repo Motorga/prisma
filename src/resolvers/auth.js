@@ -46,11 +46,21 @@ async function login (parent, {email, password}, ctx) {
     return generateToken(user);
 }
 
-const generateToken = (user) => {
+const generateToken = ({ id, email, lastname, firstname, bike, open, promotion, role, status }) => {
     const privateKey = fs.readFileSync("./src/jwt/private.pem");
 
     return {
-        token: jwt.sign(user, {
+        token: jwt.sign({
+            id,
+            email,
+            lastname,
+            firstname,
+            bike,
+            open,
+            promotion,
+            role,
+            status
+        }, {
             key: privateKey,
             passphrase: process.env.JWT_PASSPHRASE
         }, {
