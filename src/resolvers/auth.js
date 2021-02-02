@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const { ucFirst } = require("../utils");
 
 async function signup (_, args, ctx) {
     const user = await ctx.prisma.query.users({ where: { token: args.token, status: 'PENDING'} });
@@ -11,6 +12,9 @@ async function signup (_, args, ctx) {
 
     const password = await bcrypt.hash(args.password, 10);
 
+    const lastname = ucFirst(args.lastname);
+    const firstname = ucFirst(args.firstname);
+
     const updatedUser = await ctx.prisma.mutation.updateUser(
         {
             where: {
@@ -18,8 +22,8 @@ async function signup (_, args, ctx) {
             },
             data: {
                 password: password,
-                lastname: args.lastname,
-                firstname: args.firstname,
+                lastname: lastname,
+                firstname: firstname,
                 promotion: args.promotion,
                 token: '',
                 status: 'ENABLED'

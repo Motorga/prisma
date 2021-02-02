@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 
-const isUserLogged = (ctx) => {
+export const isUserLogged = (ctx) => {
     const payload = getToken(ctx);
 
     if (payload) {
@@ -29,6 +29,6 @@ class AuthError extends Error {
     }
 }
 
-module.exports = {
-    isUserLogged,
-};
+export const ucFirst = string => {
+    return string[0].toUpperCase() + string.slice(1)
+}
