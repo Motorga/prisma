@@ -58,7 +58,7 @@ async function inviteMember(parent, args, ctx, info) {
         } catch (error) {
             await ctx.prisma.mutation.deleteUser({where: { id: user.id }});
             throw Error(error.message);
-        } 
+        }
     }
 
     const users = await ctx.prisma.query.users();
@@ -102,7 +102,6 @@ async function resetAllOpen(parent, args, ctx, info) {
 }
 
 async function deleteMember(parent, args, ctx, info) {
-    console.log(args)
     await ctx.prisma.mutation.deleteUser({ where: { id: args.id } });
 
     const users = await ctx.prisma.query.users();

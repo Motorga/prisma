@@ -3,6 +3,10 @@
 type Mutation {
     signup(token: String!, password: String!, lastname: String!, firstname: String!, promotion: String!): AuthPayload!
     login(email: String!, password: String!): AuthPayload!
+    forgotPassword(email: String!): User
+    resetPassword(token: String!, password: String!): User
+    changePassword(email: String!, oldPassword: String!, password: String!): User
+
     updateOpenToUser(id: ID!, open: Int!): User
     resetAllOpen: [User]
     inviteMember(email: String!, role: String!): [User]

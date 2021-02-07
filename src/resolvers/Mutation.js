@@ -1,9 +1,9 @@
 const { createUser, updateUser, deleteUser, inviteMember, deleteMember, updateOpenToUser, resetAllOpen } = require("./Mutations/mutationUser");
-const { login, signup } = require("./auth");
+const { login, signup, forgotPassword, resetPassword, changePassword } = require("./auth");
 
 const Mutation = {
     createUser, updateUser, deleteUser, inviteMember, deleteMember, updateOpenToUser, resetAllOpen,
-    login, signup
+    login, signup, forgotPassword, resetPassword, changePassword
 };
 
 module.exports = {

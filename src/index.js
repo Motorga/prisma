@@ -5,7 +5,7 @@ const { isUserLogged } = require("./utils");
 require("dotenv").config();
 
 const isLogged = async (resolve, root, args, context, info) => {
-    if (!["login", "signup", "token"].includes(info.fieldName) && !isUserLogged(context)) {
+    if (!['token', 'email', 'login', 'signup', 'forgotPassword', 'resetPassword'].includes(info.fieldName) && !isUserLogged(context)) {
         return false;
     }
 

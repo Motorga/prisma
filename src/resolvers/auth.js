@@ -1,19 +1,17 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const { ucFirst } = require("../utils");
+const crypto = require("crypto");
+const { ucFirst, sendMail } = require("../utils");
 
-async function signup (_, args, ctx) {
-    const user = await ctx.prisma.query.users({ where: { token: args.token, status: 'PENDING'} });
+async function signup (_, {token, password, lastname, firstname, promotion}, ctx) {
+    const user = await ctx.prisma.query.users({ where: { token: token, status: 'PENDING' } });
 
     if (!user[0]) {
         throw new Error('Token invalide');
     }
 
-    const password = await bcrypt.hash(args.password, 10);
-
-    const lastname = ucFirst(args.lastname);
-    const firstname = ucFirst(args.firstname);
+    const bcryptPassword = await bcrypt.hash(password, 10);
 
     const updatedUser = await ctx.prisma.mutation.updateUser(
         {
@@ -21,10 +19,10 @@ async function signup (_, args, ctx) {
                 email: user[0].email
             },
             data: {
-                password: password,
-                lastname: lastname,
-                firstname: firstname,
-                promotion: args.promotion,
+                password: bcryptPassword,
+                lastname: ucFirst(lastname),
+                firstname: ucFirst(firstname),
+                promotion: promotion,
                 token: '',
                 status: 'ENABLED'
             },
@@ -34,17 +32,17 @@ async function signup (_, args, ctx) {
     return generateToken(updatedUser);
 }
 
-async function login (parent, {email, password}, ctx) {
+async function login (_, {email, password}, ctx) {
     const user = await ctx.prisma.query.user({ where: { email } });
     
-    if (!user || user.status === 'PENDING') {
+    if (!user || user.status !== 'ENABLED') {
         throw new Error('Identifiants incorrects');
     }
 
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-        throw new Error('Invalid password');
+        throw new Error('Identifiants incorrects');
     }
     
     return generateToken(user);
@@ -74,7 +72,71 @@ const generateToken = ({ id, email, lastname, firstname, bike, open, promotion, 
     };
 };
 
+async function forgotPassword (_, {email}, ctx) {
+    if (!email) {
+        throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
+    }
+
+    const user = await ctx.prisma.query.user({ where: { email: email } });
+
+    if (!user) {
+        throw new Error('Cet email n\'existe pas');
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    const updatedUser = await ctx.prisma.mutation.updateUser({ where: { email: email }, data: { token: token, status: 'DISABLED' } });
+
+    const text = `Bonjour!\nVoici un lien pour changer ton mot de passe:\n${process.env.FRONT_URL}/resetPassword?token=${token}`;
+
+    await sendMail(updatedUser.email, "Mot de passe oublié", text);
+
+    return updatedUser;
+}
+
+async function resetPassword (_, {token, password}, ctx) {
+    if (!token || !password) {
+        throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
+    }
+
+    const user = await ctx.prisma.query.users({ where: { token: token } });
+
+    if (!user[0]) {
+        throw new Error('Ce token est invalide');
+    }
+
+    const bcryptPassword = await bcrypt.hash(password, 10);
+    const updatedUser = await ctx.prisma.mutation.updateUser({ where: { email: user[0].email }, data: { password: bcryptPassword, token: '', status: 'ENABLED' } });
+
+    return updatedUser;
+}
+
+async function changePassword (_, {email, oldPassword, password}, ctx) {
+    if (!email || !oldPassword || !password) {
+        throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
+    }
+
+    const user = await ctx.prisma.query.user({ where: { email: email } });
+
+    if (!user) {
+        throw new Error('Cet utilisateur n\'existe pas');
+    }
+
+    const valid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!valid) {
+        throw new Error('Votre mot de passe actuel est invalide');
+    }
+
+    const bcryptPassword = await bcrypt.hash(password, 10);
+    const updatedUser = await ctx.prisma.mutation.updateUser({ where: { email: user.email }, data: { password: bcryptPassword } });
+
+    return updatedUser;
+}
+
 module.exports = {
     signup,
-    login
+    login,
+    forgotPassword,
+    resetPassword,
+    changePassword,
 };
