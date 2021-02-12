@@ -9,6 +9,10 @@ var models = [
     embedded: false
   },
   {
+    name: "Event",
+    embedded: false
+  },
+  {
     name: "Status",
     embedded: false
   },

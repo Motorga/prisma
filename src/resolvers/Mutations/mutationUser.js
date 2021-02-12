@@ -101,20 +101,11 @@ async function resetAllOpen(parent, args, ctx, info) {
     return newUsers;
 }
 
-async function deleteMember(parent, args, ctx, info) {
-    await ctx.prisma.mutation.deleteUser({ where: { id: args.id } });
-
-    const users = await ctx.prisma.query.users();
-
-    return users;
-}
-
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
     inviteMember,
     updateOpenToUser,
-    resetAllOpen,
-    deleteMember
+    resetAllOpen
 };
