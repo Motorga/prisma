@@ -1,0 +1,28 @@
+name: Production CD
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    development:
+        name: Deploy a new version of Motorga's prisma server
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Use a secure shell to deploy a new version of Motorga for the master branch
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USER }}
+                port: ${{ secrets.SSH_PORT }}
+                key: ${{ secrets.SSH_KEY }}
+                script: |
+                  cd /home/debian/prisma &&
+                  git checkout . &&
+                  git checkout master &&
+                  git pull &&
+                  npm install &&
+                  npx prisma1 deploy &&
+                  npx prisma1 generate
