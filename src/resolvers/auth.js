@@ -4,7 +4,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const { ucFirst, sendMail } = require("../utils");
 
-async function signup (_, {token, password, lastname, firstname, promotion}, ctx) {
+const signup = async (_, {token, password, lastname, firstname, promotion}, ctx) => {
     const user = await ctx.prisma.query.users({ where: { token: token, status: 'PENDING' } });
 
     if (!user[0]) {
@@ -32,7 +32,7 @@ async function signup (_, {token, password, lastname, firstname, promotion}, ctx
     return generateToken(updatedUser);
 }
 
-async function login (_, {email, password}, ctx) {
+const login = async (_, {email, password}, ctx) => {
     const user = await ctx.prisma.query.user({ where: { email } });
     
     if (!user || user.status !== 'ENABLED') {
@@ -72,7 +72,7 @@ const generateToken = ({ id, email, lastname, firstname, bike, open, promotion, 
     };
 };
 
-async function forgotPassword (_, {email}, ctx) {
+const forgotPassword = async (_, {email}, ctx) => {
     if (!email) {
         throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
     }
@@ -93,7 +93,7 @@ async function forgotPassword (_, {email}, ctx) {
     return updatedUser;
 }
 
-async function resetPassword (_, {token, password}, ctx) {
+const resetPassword = async (_, {token, password}, ctx) => {
     if (!token || !password) {
         throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
     }
@@ -110,7 +110,7 @@ async function resetPassword (_, {token, password}, ctx) {
     return updatedUser;
 }
 
-async function changePassword (_, {email, oldPassword, password}, ctx) {
+const changePassword = async (_, {email, oldPassword, password}, ctx) => {
     if (!email || !oldPassword || !password) {
         throw new Error('Une erreur s\'est produite, veuillez réessayer plus tard');
     }

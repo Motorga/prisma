@@ -14,6 +14,17 @@ type User {
 	updatedAt: DateTime! @updatedAt
 }
 
+type Event {
+	id: ID! @id
+	name: String!
+	description: String
+	date: DateTime!
+	owner: User! @relation(name: "Owner")
+	participants: [User] @relation(name: "Participants")
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
 enum Status {
 	ENABLED
 	PENDING

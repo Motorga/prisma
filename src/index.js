@@ -21,8 +21,7 @@ const server = new GraphQLServer({
         req,
         prisma: new Prisma({
             typeDefs: "src/generated/prisma.graphql",
-            endpoint:
-                process.env.URL_DB_PRISMA,
+            endpoint: process.env.URL_DB_PRISMA,
         }),
     }),
     middlewares: [ isLogged ]
@@ -33,7 +32,7 @@ server.start(
         cors: {
             origin: process.env.FRONT_URL
         },
-        playground: "dev" === process.env.ENVIRONMENT,
+        // playground: "dev" === process.env.ENVIRONMENT,
     },
     () => console.log("GraphQL server is running on http://localhost:4000")
 );

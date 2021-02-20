@@ -3,11 +3,11 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
-async function createUser(parent, args, ctx, info) {
+const createUser = (parent, args, ctx, info) => {
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
-async function updateUser(parent, args, ctx, info) {
+const updateUser = async (parent, args, ctx, info) => {
     if (args.data.password) {
         args.data.password = await bcrypt.hash(args.data.password, 10);
     }
@@ -15,11 +15,11 @@ async function updateUser(parent, args, ctx, info) {
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
-async function deleteUser(parent, args, ctx, info) {
+const deleteUser = (parent, args, ctx, info) => {
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
-async function inviteMember(parent, args, ctx, info) {
+const inviteMember = async (parent, args, ctx, info) => {
     const regexEMail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!regexEMail.test(String(args.email).toLowerCase())) {
@@ -61,12 +61,10 @@ async function inviteMember(parent, args, ctx, info) {
         }
     }
 
-    const users = await ctx.prisma.query.users();
-
-    return users;
+    return user;
 }
 
-async function updateOpenToUser(parent, args, ctx, info) {
+const updateOpenToUser = async (parent, args, ctx, info) => {
     if (args.open < 0) {
         throw new Error(`Impossible de descendre en dessous de 0 points OPEN`);
     }
@@ -88,7 +86,7 @@ async function updateOpenToUser(parent, args, ctx, info) {
     return await ctx.prisma.mutation.updateUser({ where: { id: args.id }, data: { open: args.open } }, "{ id open }");
 }
 
-async function resetAllOpen(parent, args, ctx, info) {
+const resetAllOpen = async (parent, args, ctx, info) => {
     const users = await ctx.prisma.query.users({}, "{ id open }");
 
     //using map because foreach doesn't work for the type of response from graphql
@@ -101,20 +99,11 @@ async function resetAllOpen(parent, args, ctx, info) {
     return newUsers;
 }
 
-async function deleteMember(parent, args, ctx, info) {
-    await ctx.prisma.mutation.deleteUser({ where: { id: args.id } });
-
-    const users = await ctx.prisma.query.users();
-
-    return users;
-}
-
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
     inviteMember,
     updateOpenToUser,
-    resetAllOpen,
-    deleteMember
+    resetAllOpen
 };
