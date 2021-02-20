@@ -31,7 +31,8 @@ class AuthError extends Error {
 }
 
 const ucFirst = string => {
-    return string[0].toUpperCase() + string.slice(1)
+    const words = string.split(' ');
+    return words.map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
 }
 
 const sendMail = async (email, subject, text) => {
