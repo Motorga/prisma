@@ -10,7 +10,7 @@ type Mutation {
 
     updateOpenToUser(id: ID!, open: Int!): User
     resetAllOpen: [User]
-    inviteMember(email: String!, role: String!): [User]
+    inviteMember(email: String!, role: String!): User
 }
 
 type AuthPayload {

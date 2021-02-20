@@ -21,8 +21,7 @@ const server = new GraphQLServer({
         req,
         prisma: new Prisma({
             typeDefs: "src/generated/prisma.graphql",
-            endpoint:
-                process.env.URL_DB_PRISMA,
+            endpoint: process.env.URL_DB_PRISMA,
         }),
     }),
     middlewares: [ isLogged ]
