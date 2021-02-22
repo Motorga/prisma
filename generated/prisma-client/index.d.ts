@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   event: (where?: EventWhereInput) => Promise<boolean>;
+  marker: (where?: MarkerWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -58,6 +59,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => EventConnectionPromise;
+  marker: (where: MarkerWhereUniqueInput) => MarkerNullablePromise;
+  markers: (args?: {
+    where?: MarkerWhereInput;
+    orderBy?: MarkerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Marker>;
+  markersConnection: (args?: {
+    where?: MarkerWhereInput;
+    orderBy?: MarkerOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => MarkerConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -99,6 +119,22 @@ export interface Prisma {
   }) => EventPromise;
   deleteEvent: (where: EventWhereUniqueInput) => EventPromise;
   deleteManyEvents: (where?: EventWhereInput) => BatchPayloadPromise;
+  createMarker: (data: MarkerCreateInput) => MarkerPromise;
+  updateMarker: (args: {
+    data: MarkerUpdateInput;
+    where: MarkerWhereUniqueInput;
+  }) => MarkerPromise;
+  updateManyMarkers: (args: {
+    data: MarkerUpdateManyMutationInput;
+    where?: MarkerWhereInput;
+  }) => BatchPayloadPromise;
+  upsertMarker: (args: {
+    where: MarkerWhereUniqueInput;
+    create: MarkerCreateInput;
+    update: MarkerUpdateInput;
+  }) => MarkerPromise;
+  deleteMarker: (where: MarkerWhereUniqueInput) => MarkerPromise;
+  deleteManyMarkers: (where?: MarkerWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -127,6 +163,9 @@ export interface Subscription {
   event: (
     where?: EventSubscriptionWhereInput
   ) => EventSubscriptionPayloadSubscription;
+  marker: (
+    where?: MarkerSubscriptionWhereInput
+  ) => MarkerSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -185,6 +224,14 @@ export type EventOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type MarkerOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "color_ASC"
+  | "color_DESC"
+  | "position_ASC"
+  | "position_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -416,6 +463,45 @@ export interface EventWhereInput {
   AND?: Maybe<EventWhereInput[] | EventWhereInput>;
   OR?: Maybe<EventWhereInput[] | EventWhereInput>;
   NOT?: Maybe<EventWhereInput[] | EventWhereInput>;
+}
+
+export type MarkerWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface MarkerWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  color?: Maybe<String>;
+  color_not?: Maybe<String>;
+  color_in?: Maybe<String[] | String>;
+  color_not_in?: Maybe<String[] | String>;
+  color_lt?: Maybe<String>;
+  color_lte?: Maybe<String>;
+  color_gt?: Maybe<String>;
+  color_gte?: Maybe<String>;
+  color_contains?: Maybe<String>;
+  color_not_contains?: Maybe<String>;
+  color_starts_with?: Maybe<String>;
+  color_not_starts_with?: Maybe<String>;
+  color_ends_with?: Maybe<String>;
+  color_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<MarkerWhereInput[] | MarkerWhereInput>;
+  OR?: Maybe<MarkerWhereInput[] | MarkerWhereInput>;
+  NOT?: Maybe<MarkerWhereInput[] | MarkerWhereInput>;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -694,6 +780,24 @@ export interface EventUpdateManyMutationInput {
   date?: Maybe<DateTimeInput>;
 }
 
+export interface MarkerCreateInput {
+  id?: Maybe<ID_Input>;
+  color: String;
+  position: Json;
+  user: UserCreateOneInput;
+}
+
+export interface MarkerUpdateInput {
+  color?: Maybe<String>;
+  position?: Maybe<Json>;
+  user?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface MarkerUpdateManyMutationInput {
+  color?: Maybe<String>;
+  position?: Maybe<Json>;
+}
+
 export interface UserUpdateInput {
   email?: Maybe<String>;
   password?: Maybe<String>;
@@ -729,6 +833,17 @@ export interface EventSubscriptionWhereInput {
   AND?: Maybe<EventSubscriptionWhereInput[] | EventSubscriptionWhereInput>;
   OR?: Maybe<EventSubscriptionWhereInput[] | EventSubscriptionWhereInput>;
   NOT?: Maybe<EventSubscriptionWhereInput[] | EventSubscriptionWhereInput>;
+}
+
+export interface MarkerSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MarkerWhereInput>;
+  AND?: Maybe<MarkerSubscriptionWhereInput[] | MarkerSubscriptionWhereInput>;
+  OR?: Maybe<MarkerSubscriptionWhereInput[] | MarkerSubscriptionWhereInput>;
+  NOT?: Maybe<MarkerSubscriptionWhereInput[] | MarkerSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -961,6 +1076,91 @@ export interface AggregateEventSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface Marker {
+  id: ID_Output;
+  color: String;
+  position: Json;
+}
+
+export interface MarkerPromise extends Promise<Marker>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  color: () => Promise<String>;
+  position: () => Promise<Json>;
+  user: <T = UserPromise>() => T;
+}
+
+export interface MarkerSubscription
+  extends Promise<AsyncIterator<Marker>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  color: () => Promise<AsyncIterator<String>>;
+  position: () => Promise<AsyncIterator<Json>>;
+  user: <T = UserSubscription>() => T;
+}
+
+export interface MarkerNullablePromise
+  extends Promise<Marker | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  color: () => Promise<String>;
+  position: () => Promise<Json>;
+  user: <T = UserPromise>() => T;
+}
+
+export interface MarkerConnection {
+  pageInfo: PageInfo;
+  edges: MarkerEdge[];
+}
+
+export interface MarkerConnectionPromise
+  extends Promise<MarkerConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MarkerEdge>>() => T;
+  aggregate: <T = AggregateMarkerPromise>() => T;
+}
+
+export interface MarkerConnectionSubscription
+  extends Promise<AsyncIterator<MarkerConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MarkerEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMarkerSubscription>() => T;
+}
+
+export interface MarkerEdge {
+  node: Marker;
+  cursor: String;
+}
+
+export interface MarkerEdgePromise extends Promise<MarkerEdge>, Fragmentable {
+  node: <T = MarkerPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MarkerEdgeSubscription
+  extends Promise<AsyncIterator<MarkerEdge>>,
+    Fragmentable {
+  node: <T = MarkerSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMarker {
+  count: Int;
+}
+
+export interface AggregateMarkerPromise
+  extends Promise<AggregateMarker>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMarkerSubscription
+  extends Promise<AsyncIterator<AggregateMarker>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
@@ -1087,6 +1287,53 @@ export interface EventPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface MarkerSubscriptionPayload {
+  mutation: MutationType;
+  node: Marker;
+  updatedFields: String[];
+  previousValues: MarkerPreviousValues;
+}
+
+export interface MarkerSubscriptionPayloadPromise
+  extends Promise<MarkerSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MarkerPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MarkerPreviousValuesPromise>() => T;
+}
+
+export interface MarkerSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MarkerSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MarkerSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MarkerPreviousValuesSubscription>() => T;
+}
+
+export interface MarkerPreviousValues {
+  id: ID_Output;
+  color: String;
+  position: Json;
+}
+
+export interface MarkerPreviousValuesPromise
+  extends Promise<MarkerPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  color: () => Promise<String>;
+  position: () => Promise<Json>;
+}
+
+export interface MarkerPreviousValuesSubscription
+  extends Promise<AsyncIterator<MarkerPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  color: () => Promise<AsyncIterator<String>>;
+  position: () => Promise<AsyncIterator<Json>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -1195,6 +1442,8 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+export type Json = any;
+
 export type Long = string;
 
 /**
@@ -1208,6 +1457,10 @@ export const models: Model[] = [
   },
   {
     name: "Event",
+    embedded: false
+  },
+  {
+    name: "Marker",
     embedded: false
   },
   {

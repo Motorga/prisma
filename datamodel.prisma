@@ -25,6 +25,13 @@ type Event {
 	updatedAt: DateTime! @updatedAt
 }
 
+type Marker {
+	id: ID! @id
+	color: String!
+	position: Json!
+	user: User! @relation(name: "User")
+}
+
 enum Status {
 	ENABLED
 	PENDING

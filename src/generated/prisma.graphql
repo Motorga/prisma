@@ -2,6 +2,10 @@ type AggregateEvent {
   count: Int!
 }
 
+type AggregateMarker {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -179,7 +183,117 @@ input EventWhereUniqueInput {
   id: ID
 }
 
+scalar Json
+
 scalar Long
+
+type Marker {
+  id: ID!
+  color: String!
+  position: Json!
+  user: User!
+}
+
+type MarkerConnection {
+  pageInfo: PageInfo!
+  edges: [MarkerEdge]!
+  aggregate: AggregateMarker!
+}
+
+input MarkerCreateInput {
+  id: ID
+  color: String!
+  position: Json!
+  user: UserCreateOneInput!
+}
+
+type MarkerEdge {
+  node: Marker!
+  cursor: String!
+}
+
+enum MarkerOrderByInput {
+  id_ASC
+  id_DESC
+  color_ASC
+  color_DESC
+  position_ASC
+  position_DESC
+}
+
+type MarkerPreviousValues {
+  id: ID!
+  color: String!
+  position: Json!
+}
+
+type MarkerSubscriptionPayload {
+  mutation: MutationType!
+  node: Marker
+  updatedFields: [String!]
+  previousValues: MarkerPreviousValues
+}
+
+input MarkerSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MarkerWhereInput
+  AND: [MarkerSubscriptionWhereInput!]
+  OR: [MarkerSubscriptionWhereInput!]
+  NOT: [MarkerSubscriptionWhereInput!]
+}
+
+input MarkerUpdateInput {
+  color: String
+  position: Json
+  user: UserUpdateOneRequiredInput
+}
+
+input MarkerUpdateManyMutationInput {
+  color: String
+  position: Json
+}
+
+input MarkerWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  color: String
+  color_not: String
+  color_in: [String!]
+  color_not_in: [String!]
+  color_lt: String
+  color_lte: String
+  color_gt: String
+  color_gte: String
+  color_contains: String
+  color_not_contains: String
+  color_starts_with: String
+  color_not_starts_with: String
+  color_ends_with: String
+  color_not_ends_with: String
+  user: UserWhereInput
+  AND: [MarkerWhereInput!]
+  OR: [MarkerWhereInput!]
+  NOT: [MarkerWhereInput!]
+}
+
+input MarkerWhereUniqueInput {
+  id: ID
+}
 
 type Mutation {
   createEvent(data: EventCreateInput!): Event!
@@ -188,6 +302,12 @@ type Mutation {
   upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
   deleteEvent(where: EventWhereUniqueInput!): Event
   deleteManyEvents(where: EventWhereInput): BatchPayload!
+  createMarker(data: MarkerCreateInput!): Marker!
+  updateMarker(data: MarkerUpdateInput!, where: MarkerWhereUniqueInput!): Marker
+  updateManyMarkers(data: MarkerUpdateManyMutationInput!, where: MarkerWhereInput): BatchPayload!
+  upsertMarker(where: MarkerWhereUniqueInput!, create: MarkerCreateInput!, update: MarkerUpdateInput!): Marker!
+  deleteMarker(where: MarkerWhereUniqueInput!): Marker
+  deleteManyMarkers(where: MarkerWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -217,6 +337,9 @@ type Query {
   event(where: EventWhereUniqueInput!): Event
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
+  marker(where: MarkerWhereUniqueInput!): Marker
+  markers(where: MarkerWhereInput, orderBy: MarkerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Marker]!
+  markersConnection(where: MarkerWhereInput, orderBy: MarkerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MarkerConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -236,6 +359,7 @@ enum Status {
 
 type Subscription {
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
+  marker(where: MarkerSubscriptionWhereInput): MarkerSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
