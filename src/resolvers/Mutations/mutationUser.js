@@ -2,12 +2,15 @@ const { forwardTo } = require("prisma-binding");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const { isAllowed } = require("../../utils");
 
 const createUser = (parent, args, ctx, info) => {
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
 const updateUser = async (parent, args, ctx, info) => {
+    isAllowed(ctx, args.where.id);
+
     if (args.data.password) {
         args.data.password = await bcrypt.hash(args.data.password, 10);
     }
@@ -16,6 +19,8 @@ const updateUser = async (parent, args, ctx, info) => {
 }
 
 const deleteUser = (parent, args, ctx, info) => {
+    isAllowed(ctx, args.where.id);
+
     return forwardTo("prisma")(parent, args, ctx, info);
 }
 
@@ -65,6 +70,8 @@ const inviteMember = async (parent, args, ctx, info) => {
 }
 
 const updateOpenToUser = async (parent, args, ctx, info) => {
+    isAllowed(ctx, args.id);
+
     if (args.open < 0) {
         throw new Error(`Impossible de descendre en dessous de 0 points OPEN`);
     }

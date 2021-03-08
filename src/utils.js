@@ -4,7 +4,7 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 
 const isUserLogged = (ctx) => {
-    const payload = getToken(ctx);
+    const payload = getTokenPayload(ctx);
 
     if (payload) {
         return true;
@@ -13,7 +13,7 @@ const isUserLogged = (ctx) => {
     return false;
 };
 
-const getToken = (ctx) => {
+const getTokenPayload = (ctx) => {
     const Authorization = ctx.req.request.get("Authorization");
     if (Authorization && Authorization !== "null") {
         const token = Authorization.replace("Bearer ", "");
@@ -58,8 +58,18 @@ const sendMail = async (email, subject, text) => {
     }
 }
 
+const isAllowed = (ctx, ressourceOwnerId) => {
+    const { id, role } = getTokenPayload(ctx);
+
+    console.log(id, ressourceOwnerId, role, id !== ressourceOwnerId, role !== 'ADMIN', role !== 'ADMIN' && id !== ressourceOwnerId)
+    if (role !== 'ADMIN' && id !== ressourceOwnerId) {
+        throw Error('Unauthorized');
+    }
+}
+
 module.exports = {
     isUserLogged,
     ucFirst,
-    sendMail
+    sendMail,
+    isAllowed
 };
