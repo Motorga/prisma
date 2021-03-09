@@ -61,7 +61,6 @@ const sendMail = async (email, subject, text) => {
 const isAllowed = (ctx, ressourceOwnerId) => {
     const { id, role } = getTokenPayload(ctx);
 
-    console.log(id, ressourceOwnerId, role, id !== ressourceOwnerId, role !== 'ADMIN', role !== 'ADMIN' && id !== ressourceOwnerId)
     if (role !== 'ADMIN' && id !== ressourceOwnerId) {
         throw Error('Unauthorized');
     }
