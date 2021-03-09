@@ -11,7 +11,7 @@ const updateEvent = (parent, args, ctx, info) => {
 
 const deleteEvent = async (parent, args, ctx, info) => {
     const event = await ctx.prisma.query.event({ where: { id: args.where.id } }, " { id owner { id } }")
-    isAllowed(ctx, event.user.id);
+    isAllowed(ctx, event.owner.id);
 
     return forwardTo("prisma")(parent, args, ctx, info);
 }
