@@ -9,5 +9,10 @@ npm install
 
 ## Start the prisma server
 ```console
+docker-compose up -d
 npm start
+```
+### Or use
+```console
+make start
 ```
